@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="content" style="padding-top: 60px; padding-left: 200px;">
+    <div class="container-fluid">
+        <br>
+        <div style="margin-left: 90%;"><a href="{{ url_for('purchase') }}" class="btn btn-secondary" style="width: fit-content;">Back</a></div>
+        <br>
+        <div class="card" style="width: 90%; margin: 0 auto;">
+            <div class="card-header">
+                <h5>Order Details: {{ orderedList[0]['o_no'] }}</h5>
+                <h6>Status: <span style="color: rgb(91, 156, 213);">{{ orderedList[0]['o_status'] }}</span></h6>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Product Descriptions</th>
+                            <th scope="col"></th>
+                            <th scope="col" style="text-align: center">Rate <i class="fa fa-star"></i></th>
+                            <th scope="col" style="text-align: center">Review</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <form action="{{ url_for('rate_product', ordersId = orderedList[0]['o_id']) }}" method="POST">
+                        {% for orders in orderedList %}    
+                            <tr>
+                                <td><img src="/static/images/product_images/{{ orders['p_img'] }}" alt="Product Image" style="width: 80px; height: 80px;"></td>
+                                <td>
+                                    <strong>{{ orders['p_name'] }}</strong><br>
+                                    <p style="font-size: small;">{{ orders['p_brand'] }}</p>
+                                    <p style="font-size: small;">{{ orders['p_shade'] }}</p>
+                                </td>
+
+                                <td><input type="hidden" name="p_id[]" id="p_id" value="{{ orders['p_id'] }}"></td>
+
+                                <td style="text-align: center">
+                                    <select class="form-select form-select-sm" name="rating[]" id="rating">
+                                        <option value="5">5</option>
+                                        <option value="4">4</option>
+                                        <option value="3">3</option>
+                                        <option value="2">2</option>
+                                        <option value="1">1</option>
+                                    </select>
+
+                                    <!-- <input type="radio" id="score_1" name="rating[]" value="1">
+                                    <label for="score_1">1</label>
+                                    <input type="radio" id="score_2" name="rating[]" value="2">
+                                    <label for="score_2">2</label>
+                                    <input type="radio" id="score_3" name="rating[]" value="3">
+                                    <label for="score_3">3</label>
+                                    <input type="radio" id="score_4" name="rating[]" value="4">
+                                    <label for="score_4">4</label>
+                                    <input type="radio" id="score_2" name="rating[]" value="5">
+                                    <label for="score_5">5</label> -->
+
+                                    <!-- <div class="ratingControl">
+                                        <input id="score5" class="ratingControl__radio" type="radio" name="rating[]" value="5.0" />
+                                        <label for="score5" class="ratingControl__star" title="Five Stars"></label>
+                                        <input id="score4.5" class="ratingControl__radio" type="radio" name="rating[]" value="4.5" />
+                                        <label for="score4.5" class="ratingControl__star" title="Four & Half Stars"></label>
+                                        <input id="score4" class="ratingControl__radio" type="radio" name="rating[]" value="4.0" />
+                                        <label for="score4" class="ratingControl__star" title="Four Stars"></label>
+                                        <input id="score3.5" class="ratingControl__radio" type="radio" name="rating[]" value="3.5" />
+                                        <label for="score3.5" class="ratingControl__star" title="Three & Half Stars"></label>
+                                        <input id="score3" class="ratingControl__radio" type="radio" name="rating[]" value="3.0" />
+                                        <label for="score3" class="ratingControl__star" title="Three Stars"></label>
+                                        <input id="score2.5" class="ratingControl__radio" type="radio" name="rating[]" value="2.5" />
+                                        <label for="score2.5" class="ratingControl__star" title="Two & Half Stars"></label>
+                                        <input id="score2" class="ratingControl__radio" type="radio" name="rating[]" value="2.0" />
+                                        <label for="score2" class="ratingControl__star" title="Two Stars"></label>
+                                        <input id="score1.5" class="ratingControl__radio" type="radio" name="rating[]" value="1.5" />
+                                        <label for="score1.5" class="ratingControl__star" title="One & Half Star"></label>
+                                        <input id="score1" class="ratingControl__radio" type="radio" name="rating[]" value="1.0" />
+                                        <label for="score1" class="ratingControl__star" title="One Star"></label>
+                                        <input id="score0.5" class="ratingControl__radio" type="radio" name="rating[]" value="0.5" />
+                                        <label for="score0.5" class="ratingControl__star" title="Half Star"></label>
+                                    </div> -->
+                                </td>
+
+                                <td style="text-align: center">
+                                    <textarea name="p_review[]" cols="40" rows="2" placeholder="Write your review..." required></textarea>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                            <div>                            
+                                <input type="submit" class="btn btn-primary float-end" value="Submit">
+                            </div>
+                            
+                        </form>
+                        
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

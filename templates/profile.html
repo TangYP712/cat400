@@ -1,0 +1,133 @@
+{%extends "base.html" %}
+{%block content%}
+
+<div class="content" style="padding-top: 60px; padding-left: 200px;">
+    <div class="container-fluid">
+        <h2 class="text-center alert alert-info">My Profile</h2>
+
+        {% for msg in get_flashed_messages() %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ msg }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+
+        <div class="card text-center" style="width: 90%; margin: 0 auto;">
+            <div class="card-body">
+                <div><img src="static/images/profile_pic/{{ profile.customer_profile_picture }}" alt="Profile Picture" style="border-radius: 50%; border-color: rgb(106, 106, 106); border-style: solid; width: 150px; height: 150px;"></div>
+                <strong>{{ profile.customer_name }}</strong><br>
+                <strong>{{ profile.customer_email }}</strong><br>
+                <strong>{{ profile.customer_contact }}</strong><br>
+                <strong>{{ profile.customer_gender }}</strong>
+            </div>
+        </div>
+        <br>
+        <div class="card" style="width: 90%; margin: 0 auto;">
+            <div class="card-header">
+                Update Profile
+            </div>
+            <div class="card-body">
+                <form action="/profile" method="POST" enctype="multipart/form-data">
+                    <div>
+                        <strong><p>Personal Info</p></strong>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-label">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" name="name" id="name" value="{{ profile.customer_name }}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-label">
+                                    <label for="email">Email</label>
+                                    <input type="text" class="form-control" name="email" id="email" value="{{ profile.customer_email }}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="gender">Gender</label>
+                                <select class="form-select form-select" name="gender" aria-label=".form-select-sm example">
+                                    <option selected>{{ profile.customer_gender }}</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-label">
+                                    <label for="contact_no">Contact No.</label>
+                                    <input type="text" class="form-control" name="contact_no" id="contact_no" value="{{ profile.customer_contact }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="padding-top: 25px;">
+                                    <label for="profile_pic">Upload Profile Picture: </label>
+                                    <input type="file" name="profile_pic" id="profile_pic">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div>
+                        <strong><p>Shipping Info</p></strong>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="shippingAdd1">Address 1</label>
+                                <input type="text" class="form-control" id="shippingAdd1" name="shippingadd1" value="{{ profile.customer_add1 }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="shippingAdd1">Address 2</label>
+                                <input type="text" class="form-control" id="shippingAdd2" name="shippingadd2" value="{{ profile.customer_add2 }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label for="postcode">Postal Code</label>
+                                <input type="text" class="form-control" id="postcode" name="postcode" value="{{ profile.customer_postal }}">
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label for="city">City</label>
+                                <input type="text" class="form-control" id="city" name="city" value="{{ profile.customer_city }}">
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label for="state">State</label>
+                                <select class="form-select" id="state" name="state" required>
+                                    <option selected>{{ profile.customer_state }}</option>
+                                    <option value="W.P. Kuala Lumpur">W.P. Kuala Lumpur</option>
+                                    <option value="W.P. Putrajaya">W.P. Putrajaya</option>
+                                    <option value="W.P. Labuan">W.P. Labuan</option>
+                                    <option value="Perlis">Perlis</option>
+                                    <option value="Kedah">Kedah</option>
+                                    <option value="Pulau Pinang">Pulau Pinang</option>
+                                    <option value="Perak">Perak</option>
+                                    <option value="Selangor">Selangor</option>
+                                    <option value="Negeri Sembilan">Negeri Sembilan</option>
+                                    <option value="Melaka">Melaka</option>
+                                    <option value="Johor">Johor</option>
+                                    <option value="Kelantan">Kelantan</option>
+                                    <option value="Terengganu">Terengganu</option>
+                                    <option value="Pahang">Pahang</option>
+                                    <option value="Sarawak">Sarawak</option>
+                                    <option value="Sabah">Sabah</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div>                            
+                        <input type="submit" class="btn btn-sm btn-primary float-end" value="Update">
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+
+{% endblock %}

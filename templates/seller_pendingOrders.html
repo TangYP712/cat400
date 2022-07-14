@@ -1,0 +1,45 @@
+{%extends "seller_base.html" %}
+{%block content%}
+
+<div class="content" style="padding-top: 60px; padding-left: 200px;">
+    <div class="container-fluid">
+        <br>
+        {% for msg in get_flashed_messages() %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ msg }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        <div class="card" style="width: 90%; margin: 0 auto;">
+            <div class="card-header">Pending Complete Orders</div>
+            <div class="card-body">
+                <table class="table table-hover" style="text-align: center">
+                    <thead>
+                        <tr>
+                            <th scope="col">Order Date</th>
+                            <th scope="col">Order Number</th>
+                            <th scope="col">Order Amount (RM)</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for orders in orders %}
+                        {% if orders.orders_status == "In Progress" or orders.orders_status == "Shipped" %}
+                        <tr>
+                            <td>{{ orders['orders_date'] }}</td>
+                            <td>{{ orders['orders_no'] }}</td>
+                            <td>{{ orders['orders_amount'] }}0</td>
+                            <td>{{ orders['orders_status'] }}</td>
+                            <td><a href="{{ url_for('orders_details', ordersId = orders['orders_id']) }}" class="btn btn-primary btn-sm">View / Manage Order</a></td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

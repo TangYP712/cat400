@@ -1,0 +1,81 @@
+{%extends "seller_base.html" %}
+{%block content%}
+
+<div class="content" style="padding-top: 60px; padding-left: 200px;">
+    <div class="container-fluid">
+        <br>
+        <div style="margin-left: 90%;"><a href="{{ url_for('pendingOrders') }}" class="btn btn-secondary" style="width: fit-content;">Back</a></div>
+        <br>
+        <div class="card" style="width: 90%; margin: 0 auto;">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-8">
+                        <h6><strong>Order No.: </strong>{{ order['orders_no'] }}</h6>
+                    </div>
+                    <div class="col-4">
+                        <h6><strong>Order Date: </strong>{{ order['orders_date'] }}</h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <h6><strong>Status: </strong><span style="color: rgb(91, 156, 213);">{{ order['orders_status'] }}</span></h6>
+                    </div>
+                    <div class="col-6"></div>
+                </div>
+                <h6><strong>Total Order Amount:</strong><span> RM {{ order['orders_amount'] }}0</span></h6><hr>
+                <h6><strong>Delivery Address: </strong><span>{{ order['orders_shipping_details'] }}</span></h6>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Product Descriptions</th>
+                            <th scope="col" style="text-align: center">Quantity</th>
+                            <th scope="col" style="text-align: center">Unit Price (RM)</th>
+                            <th scope="col" style="text-align: center">Total Price (RM)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for orders in orderedList %}
+                        <tr>
+                            <td><img src="/static/images/product_images/{{ orders['p_img'] }}" alt="Product Image" style="width: 80px; height: 80px;"></td>
+                            <td>
+                                <strong>{{ orders['p_name'] }}</strong>
+                                <p style="font-size: small;">{{ orders['p_brand'] }}</p>
+                                <p style="font-size: small;">{{ orders['p_shade'] }}</p>
+                            </td>
+                            <td style="text-align: center">{{ orders['o_quantity'] }}</td>
+                            <td style="text-align: center">{{ orders['p_price'] }}</td>
+                            <td style="text-align: center">{{ orders['o_total'] }}0</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <form action="/testing" method="POST">
+                    <div class="row">
+                        <div class="col-3">
+                            <select class="form-select" name="status" aria-label=".form-select-sm example">
+                                <option selected>{{ order['orders_status'] }}</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                        <div class="col-3"></div>
+                        <div class="col-3">
+                            <input type="hidden" name="orderno" value="{{ order['orders_no'] }}">
+                        </div>
+                        <div class="col-3">
+                            <input type="submit" class="btn btn-sm btn-primary float-end" value="Update Order Status">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

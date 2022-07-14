@@ -1,0 +1,43 @@
+{%extends "seller_base.html" %}
+{%block content%}
+
+<div class="content" style="padding-top: 60px; padding-left: 200px;">
+    <div class="container-fluid">
+        <h2 class="text-center alert alert-info">My Customers</h2>
+        <br>
+        <div class="row">
+            {% for msg in get_flashed_messages() %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ msg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="card" style="width: 90%; margin: 0 auto;">
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Contact No.</th>
+                            <th scope="col" style="text-align: center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in mycus %}
+                        <tr>
+                            <td>{{ row['customer_name'] }}</td>
+                            <td>{{ row['customer_email'] }}</td>
+                            <td>{{ row['customer_contact'] }}</td>
+                            <td style="text-align: center"><a href="{{ url_for('classification', cusId = row['customer_id']) }}" class="btn btn-primary btn-sm">Dashboard</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

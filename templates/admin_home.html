@@ -1,0 +1,88 @@
+{%extends "admin_base.html" %}
+{%block content%}
+
+<div class="content" style="padding-top: 60px; padding-left: 200px;">
+    <div class="container-fluid">
+        <h2 class="text-center alert alert-info">Manage Customers Account</h2>
+
+        {% for msg in get_flashed_messages() %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ msg }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>                      
+                            <th scope="col">Contact</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in customer_row %}
+                        <tr>
+                            <td>{{ row['customer_name'] }}</td>
+                            <td>{{ row['customer_email'] }}</td>
+                            <td>{{ row['customer_contact'] }}</td>
+                            <td>{{ row['customer_gender'] }}</td>
+                            <td>
+                                <a href="#!" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modaledit{{ row['user_id'] }}">Update</a>
+                                <a href="{{ url_for('delete_customer', cusId = row['user_id']) }}" onclick="return confirm('Are Sure Want To Delete ?')" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                            <div id="modaledit{{ row['user_id'] }}" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-primary" style="align-content: center;">Update Customer</h5>    
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+            
+                                        <div class="modal-body">
+                                            <form action="{{ url_for('update_customer') }}" method="POST">                                  
+                                                <input type="hidden" class="form-control form-control-md" name="user_id" value="{{ row['user_id'] }}" required><br>
+                                                <div class="form-group mb-0">
+                                                    <label for="">Customer Name</label>
+                                                    <input type="text" class="form-control form-control-md" name="name" value="{{ row['customer_name'] }}" required><br>
+                                                </div>
+                                                <div class="form-group mb-0">
+                                                    <label for="">Customer Email</label>
+                                                    <input type="email" class="form-control form-control-md" name="email" value="{{ row['customer_email'] }}" required><br>
+                                                </div>
+                                                <div class="form-group mb-0">
+                                                    <label for="">Customer Contact No.</label>
+                                                    <input type="tel"  class="form-control form-control-md" name="contact_no" value="{{ row['customer_contact'] }}" required><br>
+                                                </div>
+                                                <div>
+                                                    <label for="gender">Customer Gender</label>
+                                                    <select class="form-select form-select" name="gender" aria-label=".form-select-sm example">
+                                                        <option selected>{{ row['customer_gender'] }}</option>
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary mt-3 mb-2">UPDATE</button>                                 
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tr>                        
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="content" style="padding-top: 60px; padding-left: 200px;">
+    <div class="container-fluid">
+        <br>
+        <div style="margin-left: 90%;"><a href="{{ url_for('purchase') }}" class="btn btn-secondary" style="width: fit-content;">Back</a></div>
+        <br>
+        <div class="card" style="width: 90%; margin: 0 auto;">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-8">
+                        <h6><strong>Order No.: </strong>{{ orderedInfo['orders_no'] }}</h6>
+                    </div>
+                    <div class="col-4">
+                        <h6><strong>Order Date: </strong>{{ orderedInfo['orders_date'] }}</h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <h6><strong>Status: </strong><span style="color: rgb(91, 156, 213);">{{ orderedInfo['orders_status'] }}</span></h6>
+                    </div>
+                </div>
+                <hr><h6><strong>Delivery Address: </strong>{{ orderedInfo['orders_shipping_details'] }}</h6>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Product Descriptions</th>
+                            <th scope="col" style="text-align: center">Quantity</th>
+                            <th scope="col" style="text-align: center">Unit Price (RM)</th>
+                            <th scope="col" style="text-align: center">Total Price (RM)</th>
+                            <th scope="col" style="text-align: center; width: 250px;">Rating / Review</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for orders in orderedList %}
+                        <tr>
+                            <td><img src="/static/images/product_images/{{ orders['p_img'] }}" alt="Product Image" style="width: 80px; height: 80px;"></td>
+                            <td>
+                                <strong>{{ orders['p_name'] }}</strong><br>
+                                <p style="font-size: small;">{{ orders['p_brand'] }}</p>
+                                <p style="font-size: small;">{{ orders['p_shade'] }}</p><br>
+                            </td>
+                            <td style="text-align: center">{{ orders['o_quantity'] }}</td>
+                            <td style="text-align: center">{{ orders['p_price'] }}</td>
+                            <td style="text-align: center">{{ orders['o_total'] }}0</td>
+                            <td>
+                                {% for r in orderedRating %}
+                                {% if r['product_id'] == orders['p_id'] %}
+                                <p>{{ r['rating_score'] }} <i class="fa fa-star"></i></p>
+                                <p>{{ r['rating_review'] }}</p>
+                                {% else %}
+                                <p></p>
+                                {% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <h6 style="text-align: right;"><strong>Total Order Amount:</strong> RM {{ orderedInfo['orders_amount'] }}0</h6>
+                <h6 style="text-align: right;"><strong>Voucher Applied:</strong> {{ orderedInfo['voucher_applied'] }}</h6>
+                <h6 style="text-align: right;"><strong>Total Payment:</strong> RM {{ orderedInfo['orders_payment'] }}</h6>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

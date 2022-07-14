@@ -1,0 +1,236 @@
+{%extends "base.html" %}
+{%block content%}
+
+<div class="content" style="padding-top: 60px; padding-left: 200px;">
+    <div class="container-fluid">
+        <h2 class="text-center alert alert-info">My Dashboard</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card" style="margin: 0 auto;">
+                    <div class="card-header">Purchases History by Product Brand</div>
+                    {% if do_labels and do_values %}
+                    <div class="card-body">
+                        <div style="width: 400px; height: 400px; margin:0 auto;">
+                            <canvas id="myDoughnut" style="width: 400px; height: 400px;"></canvas>
+                        </div>
+                        <script>
+                            let do_labels = JSON.parse({{ do_labels | tojson }})
+                            let do_values = JSON.parse({{ do_values | tojson }})
+                            let sales_brand_doughnut = new Chart(myDoughnut, {
+                                    type: 'doughnut',
+                                    data: {
+                                    labels: do_labels,
+                                        datasets: [{
+                                            label: "",
+                                            data: do_values,
+                                            backgroundColor: ['#5DA5DA ', '#FAA43A', '#60BD68', '#B276B2', '#E16851', '#FF99FF','#FFFF33'],
+                                            borderWidth: 1,
+                                            hoverBorderColor: "black",
+                                            hoverBorderWidth: 1,
+                                            hoverBackgroundColor: 'rgba(154, 245, 140)',
+                                            pointHoverRadius: 5
+                                        }],
+                                    },
+                                    options: {
+                                        radius:160,
+                                            legend: {
+                                                position: "right",
+                                                    labels: {
+                                                    fontColor: "gray"
+                                                },
+                                                display: true,
+                                            },
+                                            elements: {
+                                                hitRadius: 3,
+                                            }
+                                    },
+                                })
+                        </script>
+                    </div>
+                    {% else %}
+                    <div class="card-body">
+                        <p style="font-family:'Courier New', Courier, monospace; text-align: center;">No Record Found. Let's start shopping!</p>
+                    </div>
+                    {% endif %}
+                </div>                
+            </div>
+            <div class="col-md-6">
+                <div class="card" style="margin: 0 auto;">
+                    <div class="card-header">Purchases History by Categories</div>
+                    {% if pie_labels and pie_values %}
+                    <div class="card-body">
+                        <div style="width: 400px; height: 400px; margin:0 auto;">
+                            <canvas id="myPieChart" style="width: 400px; height: 400px;"></canvas>
+                        </div>
+                        <script>
+                            let pie_labels = JSON.parse({{ pie_labels | tojson }})
+                            let pie_values = JSON.parse({{ pie_values | tojson }})
+                            let sales_categories_piechart = new Chart(myPieChart, {
+                                    type: 'pie',
+                                    data: {
+                                    labels: pie_labels,
+                                        datasets: [{
+                                            label: "",
+                                            data: pie_values,
+                                            backgroundColor: ['#5DA5DA ', '#FAA43A', '#60BD68', '#B276B2', '#E16851', '#FF99FF','#FFFF33','#3503FC'],
+                                            borderWidth: 1,
+                                            hoverBorderColor: "black",
+                                            hoverBorderWidth: 1,
+                                            hoverBackgroundColor: 'rgba(154, 245, 140)',
+                                            pointHoverRadius: 5
+                                        }],
+                                    },
+                                    options: {
+                                        radius:160,
+                                            legend: {
+                                                position: "right",
+                                                    labels: {
+                                                    fontColor: "gray"
+                                                },
+                                                display: true,
+                                            },
+                                            elements: {
+                                                hitRadius: 3,
+                                            }
+                                    },
+                                })
+                        </script>
+                    </div>
+                    {% else %}
+                    <div class="card-body">
+                        <p style="font-family:'Courier New', Courier, monospace; text-align: center;">No Record Found. Let's start shopping!</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Your Overall Spending</div>
+                    {% if line_labels and line_values %}
+                    <div class="card-body">
+                        <div style="width: 400px; height: 400px; margin:0 auto;">
+                            <canvas id="myLine" style="width: 400px; height: 400px;"></canvas>
+                        </div>
+                        <script>
+                            let llabels = JSON.parse({{ line_labels | tojson }})
+                            let lvalues = JSON.parse({{ line_values | tojson }})
+                            var ctx = document.getElementById("myLine").getContext('2d');
+                            var lineChart = new Chart(ctx, {
+                                type: "line",
+                                data: {
+                                    labels: llabels,
+                                    datasets: [
+                                        {
+                                            label: "Overall Spending",
+                                            data: lvalues,
+                                            fill: false,
+                                            borderColor: "rgb(75, 192, 192)",
+                                            lineTension: 0.1
+                                        }
+                                    ]
+                                },
+                                options: {
+                                    responsive: false,
+                                    scales: {
+                                        y: {
+                                            min: 0,
+                                            title: {
+                                                display: true,
+                                                text: "RM"
+                                            },
+                                            ticks: {
+                                                display: true
+                                            }
+                                        },
+                                        x: {
+                                            title: {
+                                                display: true,
+                                                text: "Month/Year"
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        </script>
+                    </div>
+                    {% else %}
+                    <div class="card-body">
+                        <p style="font-family:'Courier New', Courier, monospace; text-align: center;">No Record Found. Let's start shopping!</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card" style="margin: 0 auto;">
+                    <div class="card-header">Purchase Behaviour Changes</div>
+                    {% if c_rank %}
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: center;">
+                            <canvas id="myChart" width="400" height="400"></canvas>
+                        </div>
+                        <script>
+                            let glabels = JSON.parse({{ labels | tojson }})
+                            let gvalues = JSON.parse({{ values | tojson }})
+                            var ctx = document.getElementById("myChart").getContext('2d');
+                            var lineChart = new Chart(ctx, {
+                                type: "line",
+                                data: {
+                                    labels: glabels,
+                                    datasets: [
+                                        {
+                                            label: "RFM Rank",
+                                            data: gvalues,
+                                            fill: false,
+                                            borderColor: "rgb(75, 192, 192)",
+                                            lineTension: 0.1
+                                        }
+                                    ]
+                                },
+                                options: {
+                                    responsive: false,
+                                    scales: {
+                                        y: {
+                                            min: 0,
+                                            max: 5,
+                                            title: {
+                                                display: true,
+                                                text: "RFM Rank"
+                                            },
+                                            ticks: {
+                                                display: true,
+                                                stepSize: 1
+                                            }
+                                        },
+                                        x: {
+                                            title: {
+                                                display: true,
+                                                text: "Date"
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        </script>
+                        <br>
+                        <p>Your latest RFM Rank is:</p>
+                        <p>Rank {{ c_rank }}</p>
+                        <p>Changes of latest RFM Rank compare to previous RFM Rank: </p>
+                        <p>{{ diff_rank }}</p>
+                    </div>
+                    {% else %}
+                    <div class="card-body">
+                        <p style="font-family:'Courier New', Courier, monospace; text-align: center;">No Record Found.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

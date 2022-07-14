@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="content" style="padding-top: 60px; padding-left: 200px;">
+    <div class="container-fluid">
+        <br>
+        <div style="margin-left: 90%;"><a href="{{ url_for('purchase') }}" class="btn btn-secondary" style="width: fit-content;">Back</a></div>
+        <br>
+        <div class="card" style="width: 90%; margin: 0 auto;">
+            <div class="card-header">
+                <h5>Order No.: {{ orderedList[0]['o_no'] }}</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Product Descriptions</th>
+                            <th scope="col"></th>
+                            <th scope="col" style="text-align: center">Rating</th>
+                            <th scope="col" style="text-align: center">Review</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for orders in orderedList %}                        
+                        <tr>
+                            <td><img src="/static/images/product_images/{{ orders['p_img'] }}" alt="Product Image" style="width: 80px; height: 80px;"></td>
+                            <td><strong>{{ orders['p_name'] }}</strong><br><p style="font-size: small;">{{ orders['p_brand'] }}</p></td>
+                            <td style="text-align: center"></td>
+                            <td style="text-align: center">{{ orders['r_score'] }} <i class="fa fa-star"></i></td>
+                            <td style="text-align: center">{{ orders['r_review'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="content" style="padding-top: 60px; padding-left: 200px;">
+    <div class="container-fluid">
+        <h2 class="text-center alert alert-info">My Wishlist</h2>
+        {% if wishlist %}
+        <div class="card" style="width: 90%; margin: 0 auto;">
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Items</th>
+                            <th scope="col" style="text-align: center;">Price (RM)</th>
+                            <th scope="col" style="text-align: center;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in wishlist %}
+                        <tr>
+                            <td><img src="/static/images/product_images/{{ row['pi'] }}" alt="Product Image" style="width: 80px; height: 80px;"></td>
+                            <td><strong>{{ row['pn'] }}</strong><br><p style="font-size: small;">{{ row['pb'] }}</p></td>
+                            <td style="text-align: center;">{{ row['pp'] }}</td>
+                            <td>
+                                <form action="{{ url_for('add_to_cart') }}" method="post">
+                                    <div class="add-to-cart">
+                                        <input type="hidden" name="id" value="{{ row['pid'] }}">
+                                        <input type="hidden" name="price" value="{{ row['pp'] }}">
+                                        <input type="hidden" class="product-quantity" name="quantity" value="1" size="2" required/>
+                                        <input type="submit" value="Add to Cart" class="btn btn-primary btn-sm" style="margin-bottom: 10px;"/>
+                                    </div>
+                                </form>
+                                <a href="{{ url_for('delete_wishlist_items', id = row['pid']) }}" class="btn btn-secondary btn-sm">Remove</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else: %}
+        <div style="padding-top: 10px;">
+            <div style="margin: 5% 32%;">
+                <h2>{{ msg }}</h2>
+                <img src="static/images/wishlist.jpg" alt="Empty Wishlist" style="margin: 2% 32%;">                   
+            </div>                    
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
